@@ -23,7 +23,7 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
       -
-        name: prepare the docker-compose-todo run
+        name: prepare the docker-compose-2 run
         run: |
               ls -l
       -
@@ -32,17 +32,17 @@ jobs:
         with:
           context: .
           push: true
-          tags: nefelibata0531/my-final-work-website:latest
+          tags: assassinhua/finalwork
       -
-        name: copy docker-compose-todo.yml via ssh password
+        name: copy docker-compose-2.yml via ssh password
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{secrets.HOST_SERVER}}
           username: ${{ secrets.HOST_USER_NAME }}
           key: ${{ secrets.HOST_SSH_PRIVATE_KEY }}
           port: 22
-          source: "docker-compose-todo.yml"
-          target: "/home/ecs-user/frontend"    
+          source: "docker-compose-2.yml"
+          target: "/home/ubuntu/frontend"    
       -
         name:   docker compose
         uses: appleboy/ssh-action@v0.1.10
@@ -52,9 +52,9 @@ jobs:
           key: ${{ secrets.HOST_SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            cd /home/ecs-user/frontend
+            cd /home/ubuntu/frontend
             echo ${{ secrets.DOCKER_HUB_TOKEN }} | docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
-            docker compose -f docker-compose-todo.yml down
-            docker compose -f docker-compose-todo.yml pull
-            docker compose -f docker-compose-todo.yml up -d
-            rm -rf /home/ecs-user/frontend
+            docker compose -f docker-compose-2.yml down
+            docker compose -f docker-compose-2.yml pull
+            docker compose -f docker-compose-2.yml up -d
+            rm -rf /home/ubuntu/frontend
