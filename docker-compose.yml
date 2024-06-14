@@ -3,4 +3,4 @@ services:
   frontend:
     image: assassinhua/docker-ci-basic
     ports:
-      - "8087:80"
+      - "8081:80"
